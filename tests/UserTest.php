@@ -5,7 +5,6 @@ namespace App\Test;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 use DateTime;
-
 class UserTest extends TestCase
 {
     private $user;
@@ -60,4 +59,6 @@ class UserTest extends TestCase
         $this->user->setLastname('');
         $this->assertFalse($this->user->isValid());
     }
+
+
 }

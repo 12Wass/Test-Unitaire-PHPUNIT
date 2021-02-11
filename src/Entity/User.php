@@ -6,7 +6,6 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 use DateTimeZone;
-use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -59,6 +58,7 @@ class User
         $this->password = $password;
         $this->birthday = $birthday;
     }
+
 
     public function isValid(): bool
     {
