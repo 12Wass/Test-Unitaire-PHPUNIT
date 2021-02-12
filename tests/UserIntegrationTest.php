@@ -1,28 +1,15 @@
 <?php
 
-namespace App\Test;
+namespace App\Tests;
 
-use App\Entity\User;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserIntegrationTest extends WebTestCase
 {
-    private $user;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $today = new DateTime('now');
-        $birthday = $today->sub(new \DateInterval('P30Y'))->format('Y-m-d');
-        $this->user = new User();
-
-        $this->user->setFirstname('Wassim');
-        $this->user->setLastname('DAHMANE');
-        $this->user->setEmail('wassimdah@gmail.com');
-        $this->user->setPassword('jesuispasfandestestsunitaires');
-        $this->user->setBirthday($birthday);
     }
 
     public function userInsertion()
@@ -41,6 +28,7 @@ class UserIntegrationTest extends WebTestCase
 
         $this->assertEquals(409, $client->getResponse()->getStatusCode());
     }
+
     public function testUserWithoutName()
     {
         $client = static::createClient();
@@ -53,6 +41,10 @@ class UserIntegrationTest extends WebTestCase
 
         $this->assertEquals(422, $client->getResponse()->getStatusCode());
     }
+
+    /**
+     * @test
+     */
     public function passwordTooShort()
     {
         $client = static::createClient();
@@ -62,7 +54,6 @@ class UserIntegrationTest extends WebTestCase
         ]
         ];
         $client->request('POST', 'user/new', $user);
-
         $this->assertEquals(422, $client->getResponse()->getStatusCode());
     }
 

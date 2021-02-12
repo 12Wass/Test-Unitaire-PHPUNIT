@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\User;
 
 /**
  * @Route("/todo/list")
@@ -32,16 +33,26 @@ class TodoListController extends AbstractController
     public function new(Request $request, SessionInterface $session): Response
     {
 
+        if ($session->get('user')) {
+            $user = $this->getDoctrine()->getManager()->getRepository(User::class)->find($session->get('user'));
+        }
+
+        if (isset($user) && $user->getTodoList() != null) {
+            return $this->redirectToRoute('todo_list_index', [], 301);
+        }
         $todoList = new TodoList();
         $form = $this->createForm(TodoListType::class, $todoList);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && isset($user)) {
+            $todoList->setUser($user);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($todoList);
             $entityManager->flush();
-
-            return $this->redirectToRoute('todo_list_index');
+            return $this->redirectToRoute('todo_list_index', [], 201);
+        } elseif (!isset($user)) {
+            return $this->redirectToRoute('user_new');
         }
 
         return $this->render('todo_list/new.html.twig', [
@@ -60,37 +71,4 @@ class TodoListController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="todo_list_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, TodoList $todoList): Response
-    {
-        $form = $this->createForm(TodoListType::class, $todoList);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('todo_list_index');
-        }
-
-        return $this->render('todo_list/edit.html.twig', [
-            'todo_list' => $todoList,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="todo_list_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, TodoList $todoList): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$todoList->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($todoList);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('todo_list_index');
-    }
 }
