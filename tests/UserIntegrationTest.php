@@ -15,14 +15,13 @@ class UserIntegrationTest extends WebTestCase
 
         $today = new DateTime('now');
         $birthday = $today->sub(new \DateInterval('P30Y'))->format('Y-m-d');
+        $this->user = new User();
 
-        $this->user = new User(
-            'DAHMANE',
-            'Wassim',
-            'wassimdah@gmail.com',
-            'jesuispasfandestestsunitaires',
-            "$birthday"
-        );
+        $this->user->setFirstname('Wassim');
+        $this->user->setLastname('DAHMANE');
+        $this->user->setEmail('wassimdah@gmail.com');
+        $this->user->setPassword('jesuispasfandestestsunitaires');
+        $this->user->setBirthday($birthday);
     }
 
     public function testPasswordTooShort()

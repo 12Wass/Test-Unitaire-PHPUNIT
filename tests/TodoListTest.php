@@ -25,13 +25,13 @@ class TodoListTest extends TestCase
         $birthday = $today->sub(new DateInterval('P30Y'))->format('Y-m-d');
         $createdItemAt = $myToday->add(new DateInterval('PT45M'));
 
-        $this->user = new User(
-            'DAHMANE',
-            'Wassim',
-            'wassimdah@gmail.com',
-            'vivephpunit',
-            "$birthday"
-        );
+        $this->user = new User();
+
+        $this->user->setFirstname('Wassim');
+        $this->user->setLastname('DAHMANE');
+        $this->user->setEmail('wassimdah@gmail.com');
+        $this->user->setPassword('vivephpunit');
+        $this->user->setBirthday($birthday);
 
         $this->item = new Item(
             'Conquerir le monde',

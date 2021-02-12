@@ -50,14 +50,6 @@ class User
      */
     private $todoList;
 
-    public function __construct(string $firstname, string $lastname, string $email, string $password, string $birthday)
-    {
-        $this->email = $email;
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
-        $this->password = $password;
-        $this->birthday = $birthday;
-    }
 
 
     public function isValid(): bool
