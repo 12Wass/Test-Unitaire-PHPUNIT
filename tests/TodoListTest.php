@@ -70,7 +70,7 @@ class TodoListTest extends TestCase
     {
         $this->todolist->expects($this->any())->method('getSizeTodoList')->willReturn('10');
         $this->expectException('Exception');
-        $this->expectExceptionMessage('La ToDoList possede trop d\'item');
+        $this->expectExceptionMessage("La todo list possède beaucoup d'item");
 
         $canAddItem = $this->todolist->canAddItem($this->item);
 

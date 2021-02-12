@@ -5,6 +5,7 @@ namespace App\Test;
 use App\Entity\User;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 class UserIntegrationTest extends WebTestCase
 {
     private $user;
@@ -24,19 +25,45 @@ class UserIntegrationTest extends WebTestCase
         $this->user->setBirthday($birthday);
     }
 
-    public function testPasswordTooShort()
+    public function userInsertion()
     {
         $client = static::createClient();
 
-        $user = [
-          'firstname' => 'Yassine',
+        $user = ['user' => [
+            'firstname' => 'Yassine',
             'lastname' => 'Bousaidi',
             'email' => 'Yassine.bousaidi@gmail.com',
-            'password' => '1345678'
+            'password' => '12345678'
+        ]
         ];
 
         $client->request('POST', 'user/new', $user);
 
-        $this->assertEquals(201, $client->getResponse()->getStatusCode());
+        $this->assertEquals(409, $client->getResponse()->getStatusCode());
     }
+    public function testUserWithoutName()
+    {
+        $client = static::createClient();
+        $user = ['user' => [
+            'email' => 'Yassine.bousaidi@gmail.com',
+            'password' => '12345678'
+        ]
+        ];
+        $client->request('POST', 'user/new', $user);
+
+        $this->assertEquals(422, $client->getResponse()->getStatusCode());
+    }
+    public function passwordTooShort()
+    {
+        $client = static::createClient();
+        $user = ['user' => [
+            'email' => 'Yassine.bousaidi@gmail.com',
+            'password' => '1234678'
+        ]
+        ];
+        $client->request('POST', 'user/new', $user);
+
+        $this->assertEquals(422, $client->getResponse()->getStatusCode());
+    }
+
 }

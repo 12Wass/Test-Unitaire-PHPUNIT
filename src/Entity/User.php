@@ -57,6 +57,7 @@ class User
         $date = new DateTime($this->birthday,new DateTimeZone('Europe/Paris'));
         $today = new DateTime('now',new DateTimeZone('Europe/Paris'));
         $age = $date->diff($today)->y;
+        $this->birthday = $date;
 
         return !empty($this->firstname)
             && !empty($this->lastname)
