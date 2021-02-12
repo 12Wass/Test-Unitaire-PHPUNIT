@@ -57,4 +57,42 @@ class UserIntegrationTest extends WebTestCase
         $this->assertEquals(422, $client->getResponse()->getStatusCode());
     }
 
+
+    public function testWrongEmailLogin(){
+        $client = static::createClient();
+        $user = ['user' => [
+            'email' => 'testsunitaires@gmail.com',
+            'password' => 'azertyuiop'
+        ]];
+
+        $client->request('POST', 'user/login', $user);
+
+        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+    }
+
+    public function testWrongPasswordLogin(){
+        $client = static::createClient();
+        $user = ['user' => [
+            'email' => 'wassimdah@gmail.com',
+            'password' => 'azertyuiophzeiuaheua'
+        ]];
+
+        $client->request('POST', 'user/login', $user);
+
+        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+    }
+
+    public function testGoodCredentialsLogin(){
+        $client = static::createClient();
+        $user = ['user' => [
+            'email' => 'wassimdah@gmail.com',
+            'password' => 'azertyuiop'
+        ]];
+
+        $client->request('POST', 'user/login', $user);
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+
+
 }
