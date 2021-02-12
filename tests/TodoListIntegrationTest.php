@@ -29,7 +29,7 @@ class TodoListIntegrationTest extends WebTestCase
 
         $client->request('POST', 'todo/list/new', $todoList);
 
-        $this->assertEquals(500, $client->getResponse()->getStatusCode());
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
 
 }
