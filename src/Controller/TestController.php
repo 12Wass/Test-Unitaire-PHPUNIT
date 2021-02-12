@@ -18,13 +18,13 @@ class TestController extends AbstractController
 
         $today = new DateTime('now');
         $birthday = $today->sub(new \DateInterval('P30Y'))->format('Y-m-d');
-        $user = new User(
-            'DAHMANE',
-            'Wassim',
-            'wassimdah@gmail.com',
-            'vivelestestsunitaires',
-            "$birthday"
-        );
+        $user = new User();
+
+        $user->setFirstname('Wassim');
+        $user->setLastname('DAHMANE');
+        $user->setEmail('wassimdah@gmail.com');
+        $user->setPassword('vivelestestsunitaires');
+        $user->setBirthday($birthday);
 
         $td = new DateTime();
         $dateChoiceToday = new DateTime('2020-12-25 19:36:00');

@@ -6,7 +6,6 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 use DateTimeZone;
-use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -51,20 +50,14 @@ class User
      */
     private $todoList;
 
-    public function __construct(string $firstname, string $lastname, string $email, string $password, string $birthday)
-    {
-        $this->email = $email;
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
-        $this->password = $password;
-        $this->birthday = $birthday;
-    }
+
 
     public function isValid(): bool
     {
         $date = new DateTime($this->birthday,new DateTimeZone('Europe/Paris'));
         $today = new DateTime('now',new DateTimeZone('Europe/Paris'));
         $age = $date->diff($today)->y;
+        $this->birthday = $date;
 
         return !empty($this->firstname)
             && !empty($this->lastname)
